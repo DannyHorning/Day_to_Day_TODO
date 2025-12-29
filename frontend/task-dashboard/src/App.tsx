@@ -11,6 +11,7 @@ function App() {
      <p>look at me go</p>
      <p>but where the fuck is the styling coming from, cause it sure as shit aint me</p>
      <p>oh, found it, its in App.css</p>
+     <p>test to see if the desktop github repo works properly</p>
      <Table />
     </>
   )

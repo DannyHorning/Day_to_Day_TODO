@@ -20,9 +20,12 @@ console.log(tasks)
                     <th>Description</th>
                     <th>Completed</th>
                     <th>Created On</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                 </tr>
             </thead>            
             <tbody>
+            
                     {tasks.map((task: any) => (
                         <tr key={task.id}>
                             <td>{task.id}</td>
@@ -30,10 +33,18 @@ console.log(tasks)
                             <td>{task.description}</td>
                             <td>{task.completed ? "Yes" : "No"}</td>
                             <td>{new Date(task.created_at).toLocaleDateString()}</td>
+                            <td><button>Edit</button></td>
+                            <td><input type="checkbox" /></td>
+                            
                         </tr>
-                    ))}
+                    
                 
+                    ))}
+                <tr>
+                    <td colSpan={7}><button>Save</button></td>
+                </tr>
             </tbody>
+            
         </table>
     )
 };

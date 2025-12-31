@@ -7,10 +7,30 @@ export default function Form(){
     const [description, setDescription] = useState("");
 
 
-    const handleSubmit = () => {
+    const handleSubmit = (e:any) => {
+        //prevent page reload
+        e.preventDefault();
+
+        //Post to backend to add a task
         console.log("Form submitted")
+        console.log("Title:", title)
+        console.log("Description:", description)
         if (title && description) {
-        
+        fetch("http://localhost:3000/tasks", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ title, description })
+        }).then(response => response.json())
+          .then(data => {
+              console.log("Task added:", data);
+              setTitle("");
+              setDescription("");
+          })
+          .catch(error => {
+              console.error("Error adding task:", error);
+          });
         }
 }
     return(

@@ -14,13 +14,14 @@ export default function Table(){
         console.log("Fetched tasks:", data);
 
     }
+    
+
+    const editTasks = (id: number) => {
+    console.log("Edit button clicked for task with ID:", id);
     const fetchTask = async () => {
         const res = await fetch(`http://localhost:3000/tasks/${id}`);
         const data = await res.json()
         console.log("Fetched task for editing:", data);}
-
-    const editTasks = (id: number) => {
-    console.log("Edit button clicked for task with ID:", id);
     fetchTask();
 
     }

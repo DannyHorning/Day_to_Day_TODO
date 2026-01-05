@@ -66,6 +66,13 @@ app.put('/tasks/:id', express.json(), (req, res) => {
     res.send({ success: true, changes: info.changes });
 });
 
+app.get('/tasks/:id', (req, res) => {
+    const { id } = req.params;
+    const statement = db.prepare(`SELECT * FROM tasks WHERE id = ?`);
+    const task = statement.get(id);
+    res.send(task);
+});
+
 app.delete('/tasks/:id', (req, res) => {
     const { id } = req.params;
     const info = deleteTask(id);

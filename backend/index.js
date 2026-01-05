@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const corsOptions = {
     origin: '*', // Allow all origins for simplicity; adjust as needed for security
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type'],
 };
 
@@ -37,9 +37,9 @@ function addTask(title, description) {
     return info;
 }
 
-function updateTask(id, title, description) {
-    const statement=db.prepare(`UPDATE tasks SET title = ?, description = ? WHERE id = ?`);
-    const info=statement.run(title, description, id);
+function updateTask(id, title, description, completed) {
+    const statement=db.prepare(`UPDATE tasks SET title = ?, description = ?, completed = ? WHERE id = ?`);
+    const info=statement.run(title, description, completed, id);
     return info;
 }
 
@@ -61,8 +61,8 @@ app.post('/tasks', express.json(), (req, res) => {
 
 app.put('/tasks/:id', express.json(), (req, res) => {
     const { id } = req.params;
-    const { title, description } = req.body;
-    const info = updateTask(id, title, description);
+    const { title, description, completed } = req.body;
+    const info = updateTask(id, title, description, completed);
     res.send({ success: true, changes: info.changes });
 });
 
@@ -78,6 +78,24 @@ app.delete('/tasks/:id', (req, res) => {
     const info = deleteTask(id);
     res.send({ success: true, changes: info.changes });
 });
+
+app.patch('/tasks/:id', express.json(), (req, res) => {
+  const { id } = req.params;
+  const { completed } = req.body;
+
+  try {
+    const normalizedCompleted = completed ? 1 : 0; // SQLite uses 1/0 for booleans
+    const stmt = db.prepare(`UPDATE tasks SET completed = ? WHERE id = ?`);
+    const info = stmt.run(normalizedCompleted, id);
+    res.send({ success: true, changes: info.changes });
+  } catch (err) {
+    console.error("PATCH ERROR:", err.message);
+    res.status(500).send({ error: err.message });
+  }
+});
+
+
+
 //default welcome route
 app.get('/', (req, res) => {
     res.send('Welcome to the Planner API');

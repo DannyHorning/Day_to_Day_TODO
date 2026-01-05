@@ -1,10 +1,10 @@
-import Form from './components/Form.tsx'
+
 import Table from './components/Table.tsx'
+
 import './App.css'
 
 function App() {
-  
-
+    
   return (
     <>
      <h1>Holy shit im coding</h1>
@@ -12,10 +12,9 @@ function App() {
      <p>but where the fuck is the styling coming from, cause it sure as shit aint me</p>
      <p>oh, found it, its in App.css</p>
      <p>test to see if the desktop github repo works properly</p>
-     <>
-     <Table />
-     <Form />
-     </>
+     
+     <Table/>
+     
     </>
   )
 }

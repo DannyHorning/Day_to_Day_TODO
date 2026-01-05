@@ -1,17 +1,30 @@
 import {useState, useEffect,} from "react";
+import Form from "./Form.tsx";
 
 
 export default function Table(){
 
     const [tasks, setTasks] = useState([])
 
+    const fetchTasks = async () => {
+        const res = await fetch("http://localhost:3000/tasks");
+        const data = await res.json()
+        setTasks(data)
+        console.log("Fetched tasks:", data);
+
+    }
+
+    const editTasks = async (id: number) => {
+    console.log("Edit button clicked for task with ID:", id);
+    }
+
     useEffect(() => {
-        fetch("http://localhost:3000/tasks")
-        .then((res) => res.json())
-        .then((data) => setTasks(data))
-    }, [])
+        fetchTasks();
+    }, []);
+
 console.log(tasks)  
     return(
+        <>
         <table>
             <thead>
                 <tr>
@@ -33,7 +46,7 @@ console.log(tasks)
                             <td>{task.description}</td>
                             <td>{task.completed ? "Yes" : "No"}</td>
                             <td>{new Date(task.created_at).toLocaleDateString()}</td>
-                            <td><button>Edit</button></td>
+                            <td><button onClick={() => editTasks(task.id)}>Edit</button></td>
                             <td><input type="checkbox" /></td>
                             
                         </tr>
@@ -46,5 +59,7 @@ console.log(tasks)
             </tbody>
             
         </table>
+        <Form onTaskCreated={fetchTasks} />
+        </>
     )
 };

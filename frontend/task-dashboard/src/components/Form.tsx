@@ -1,8 +1,11 @@
 import {useState} from "react";
 
+interface FormProps {
+    onTaskCreated: () => void;
+}
 
 
-export default function Form(){
+export default function Form({ onTaskCreated }: FormProps){
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
@@ -27,11 +30,13 @@ export default function Form(){
               console.log("Task added:", data);
               setTitle("");
               setDescription("");
+              onTaskCreated();
           })
           .catch(error => {
               console.error("Error adding task:", error);
           });
-        }
+        }   
+        
 }
     return(
         <form onSubmit={handleSubmit}>
